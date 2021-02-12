@@ -1,0 +1,30 @@
+<br>
+<div class="container">
+<div class="col-md-12" *ngIf="customers">
+  <h2 style="margin: auto"> Customer Details</h2>
+  <div class="text-right my-2">
+    <button class="btn btn-info" routerLink="/customers/get">Add new customer</button>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="hidden">Id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let cus of customers">
+      <td>{{cus.id}}</td>
+      <td>{{cus.name}}</td>
+      <td>{{cus.email}}</td>
+      <td>
+        <button class="btn btn-success" routerLink="/customers/get/{{cus.id}}">Edit</button> &nbsp;
+        <button class="btn btn-danger" (click)="deleteCustomer(cus.id)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>
