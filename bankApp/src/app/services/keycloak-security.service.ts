@@ -11,22 +11,18 @@ export class KeycloakSecurityService {
     // @ts-ignore
     this.kc = new Keycloak({
       url: "http://localhost:8080/auth",
-      realm: "realm-bq",
+      realm: "Realm-Bq",
       clientId: "banque-app"
     });
 
     await this.kc.init({
-      //onLoad:"login-required",
-      onLoad: 'check-sso',
+      onLoad:"login-required",
+      //onLoad: 'check-sso',
       promiseType: 'native'
     });
   }
-  public getCustomers(){
-    return this.http.get("http://localhost:8888/CUSTOMER-SERVICE/customers");
-  }
-
-  public getComptes(){
-    return this.http.get("http://localhost:8888/COMPTES-SERVICE/comptes/full");
+  public getData(url:String){
+    return this.http.get(url+"");
   }
   public getById(url:String , resource: any){
     return this.http.get(url + resource.toString() + '/');
@@ -40,6 +36,7 @@ export class KeycloakSecurityService {
   delete(url:String , resource: any){
     return this.http.delete(url + resource.toString() + '/');
   }
+
   public isManager():boolean{
     return this.kc.hasResourceRole("ADMIN");
   }

@@ -1,15 +1,15 @@
 <br>
 <div class="container">
 <div class="col-md-12" *ngIf="customers">
-  <h2 style="margin: auto"> Customer Details</h2>
+  <h2 style="margin: auto">CLIENTS</h2>
   <div class="text-right my-2">
-    <button class="btn btn-info" routerLink="/customers/get">Add new customer</button>
+    <button class="btn btn-info" routerLink="/customers/get">Nouveau client</button>
   </div>
-  <table class="table table-striped">
+  <table class="table table-striped table-hover table-dark">
     <thead>
     <tr>
-      <th class="hidden">Id</th>
-      <th>Name</th>
+      <th class="hidden">Identifiant</th>
+      <th>Client</th>
       <th>Email</th>
       <th>Actions</th>
     </tr>
@@ -20,8 +20,8 @@
       <td>{{cus.name}}</td>
       <td>{{cus.email}}</td>
       <td>
-        <button class="btn btn-success" routerLink="/customers/get/{{cus.id}}">Edit</button> &nbsp;
-        <button class="btn btn-danger" (click)="deleteCustomer(cus.id)">Delete</button>
+        <button class="btn btn-success mr-2" routerLink="/customers/get/{{cus.id}}">Modifier</button>
+        <button class="btn btn-danger ml-2" (click)="deleteCustomer(cus.id)">Supprimer</button>
       </td>
     </tr>
     </tbody>

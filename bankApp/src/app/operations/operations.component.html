@@ -1,0 +1,23 @@
+<br>
+<div class="container" *ngIf="compte">
+  <div class="card">
+    <h5 class="card-header text-center">{{compte.customer.name}}</h5>
+    <div class="card-body">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 my-2" *ngFor="let op of compte.operations">
+            <div class="card">
+              <h5 class="card-header text-center">{{op.dateCreation | date:"dd-MM-yyyy - HH:mm"}}</h5>
+              <div class="card-body text-center">
+                <span class="text-danger">Montant : </span> {{op.montant | number:'1.2-2'}} DH
+                <br>
+                <span class="text-danger">Type de transaction : </span> {{op.type}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,13 @@
 <br>
 <div class="container">
 <div class="card">
-  <h5 class="card-header" *ngIf="!id">New Customer</h5>
-  <h5 class="card-header" *ngIf="id">Update Customer</h5>
+  <h5 class="card-header" *ngIf="!id">Nouveau client</h5>
+  <h5 class="card-header" *ngIf="id">Modifiet les informations de client</h5>
   <div class="card-body">
     <form (ngSubmit)="save()" *ngIf="customer">
       <div class="row">
         <div class="col-md-6">
-          <label for="Name" >Name :</label>
+          <label for="Name" >Client :</label>
           <input type="text" id="Name" name="Name" [(ngModel)]="customer.name" class="form-control">
         </div>
         <div class="col-md-6">

@@ -12,7 +12,6 @@ import java.util.Date;
 
 @Service
 public class CompteService implements ICompteService {
-
     @Autowired
     private CompteRepository compteRepository;
     @Autowired
@@ -26,20 +25,18 @@ public class CompteService implements ICompteService {
     @Override
     public void versement(long idCompte, double montant) {
         Compte compte=compteRepository.findById(idCompte).get();
-        Operation operation=new Operation(null,new Date(),montant,"DEBIT",null);
+        Operation operation=operationRepository.save(new Operation(null,new Date(),montant,"DEBIT",compte));
         compte.getOperations().add(operation);
         compte.setSolde(compte.getSolde()+montant);
-        operationRepository.save(operation);
         compteRepository.save(compte);
     }
 
     @Override
     public void retrait(long idCompte, double montant) {
         Compte compte=compteRepository.findById(idCompte).get();
-        Operation operation=new Operation(null,new Date(),montant,"CREDIT",null);
+        Operation operation=operationRepository.save(new Operation(null,new Date(),montant,"CREDIT",compte));
         compte.getOperations().add(operation);
         compte.setSolde(compte.getSolde()-montant);
-        operationRepository.save(operation);
         compteRepository.save(compte);;
     }
 
@@ -48,17 +45,14 @@ public class CompteService implements ICompteService {
         Compte compte=compteRepository.findById(idCompte).get();
         Compte compte2=compteRepository.findById(idCompte2).get();
 
-        Operation operation=new Operation(null,new Date(),montant,"CREDIT",null);
-        Operation operation2=new Operation(null,new Date(),montant,"DEBIT",null);
+        Operation operation=operationRepository.save(new Operation(null,new Date(),montant,"CREDIT",compte));
+        Operation operation2=operationRepository.save(new Operation(null,new Date(),montant,"DEBIT",compte2));
 
         compte.getOperations().add(operation);
         compte2.getOperations().add(operation2);
 
         compte.setSolde(compte.getSolde()-montant);
         compte2.setSolde(compte.getSolde()+montant);
-
-        operationRepository.save(operation);
-        operationRepository.save(operation2);
 
         compteRepository.save(compte);
         compteRepository.save(compte2);

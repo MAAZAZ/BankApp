@@ -1,0 +1,28 @@
+<br>
+<div class="container">
+  <div class="card">
+    <h5 class="card-header">Virement</h5>
+    <div class="card-body">
+      <form (ngSubmit)="save()">
+        <div class="row">
+          <div class="col-md-3">
+            <label for="crediteur" >ID Créditeur :</label>
+            <input type="crediteur" id="crediteur" name="crediteur" [(ngModel)]="virement.idSrc" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label for="debiteur" >ID Débiteur :</label>
+            <input type="debiteur" id="debiteur" name="debiteur" [(ngModel)]="virement.idDest" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="montant" >Montant :</label>
+            <input type="number" id="montant" name="montant" [(ngModel)]="virement.montant" class="form-control">
+          </div>
+          <div class="col-md-12 my-2 text-right">
+            <button class="btn btn-outline-success mr-2" type="submit">Save</button>
+            <button class="btn btn-outline-danger ml-2" type="reset">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

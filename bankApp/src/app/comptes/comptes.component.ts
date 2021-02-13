@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {KeycloakSecurityService} from "../services/keycloak-security.service";
+import {faPaste, faUser, faUserAlt, faUserAltSlash, faUserCog, faUserFriends} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-comptes',
@@ -7,9 +9,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComptesComponent implements OnInit {
 
-  constructor() { }
+  user=faUser
+  userActive=faUserAlt
+  userdisable=faUserAltSlash
+  users=faUserFriends
+  userconf=faUserCog
+  operations=faPaste
 
-  ngOnInit(): void {
+  public comptes: any;
+  public errorMessage: any;
+  private url:string='http://localhost:8888/COMPTE-SERVICE/comptes/full/';
+
+  constructor(private kcService:KeycloakSecurityService) { }
+
+  ngOnInit() {
+    this.onGetComptes();
+  }
+  onGetComptes() {
+    this.kcService.getData(this.url).subscribe(data=>{
+        this.comptes=data
+      },
+      err=>{ this.errorMessage=err.error.message;});
   }
 
+  etatCompte(id:number){
+    this.comptes.forEach((element: any, index: number) => {
+      if (element.id == id) {
+        if(element.etat=="ACTIVE")
+          this.kcService.getData(this.url+element.id+"/suspendre").subscribe(data=>{
+            element.etat="SUSPENDED"
+          })
+        else {
+          this.kcService.getData(this.url+element.id+"/activer").subscribe(data=>{
+            element.etat="ACTIVE"
+          });
+        }
+      }
+    });
+  }
 }

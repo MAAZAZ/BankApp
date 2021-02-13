@@ -1,1 +1,30 @@
-<p>savecompte works!</p>
+<br>
+<div class="container" *ngIf="compte">
+  <div class="card">
+    <h5 class="card-header" >Nouveau compte</h5>
+    <div class="card-body">
+      <form (ngSubmit)="save()" *ngIf="compte">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="type" >Type :</label>
+            <input type="type" id="type" name="type" [(ngModel)]="compte.type" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="client" >Client :</label>
+            <select
+              name="client"
+              id="client"
+              class="form-control"
+              [(ngModel)]="compte.customerID">
+              <option *ngFor="let s of clients" [value]="s.id" [selected]="compte.customerID==s.id" required>{{ s.name }}</option>
+            </select>
+          </div>
+          <div class="col-md-12 my-2 text-right">
+            <button class="btn btn-outline-success" type="submit">Save</button>&nbsp;
+            <button class="btn btn-outline-danger" type="reset">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

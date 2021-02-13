@@ -1,1 +1,37 @@
-<p>comptes works!</p>
+<br>
+<div class="container">
+  <div class="col-md-12" *ngIf="comptes">
+    <h2 style="margin: auto">Comptes</h2>
+    <div class="text-right my-2">
+      <button class="btn btn-outline-info mr-2" routerLink="/comptes/nouveau">Nouveau compte</button>
+      <button class="btn btn-outline-info ml-2" routerLink="/comptes/virement"><fa-icon [icon]="users"></fa-icon>&nbsp;<small>Virement</small></button>
+    </div>
+    <table class="table table-striped table-hover table-dark">
+      <thead>
+      <tr class="text-center">
+        <th class="hidden">Client</th>
+        <th>Date création</th>
+        <th>Type</th>
+        <th>Solde</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let compte of comptes"  class="text-center">
+        <td>{{compte.customer.name}}</td>
+        <td>{{compte.dateCreation | date:"dd-MM-yyyy - HH:mm"}}</td>
+        <td>{{compte.type}}</td>
+        <td>{{compte.solde | number:'1.2-2'}} DH</td>
+        <td class="text-center">
+          <button *ngIf="compte.etat=='ACTIVE'" class="btn btn-danger mr-2" (click)="etatCompte(compte.id)"><fa-icon [icon]="userdisable"></fa-icon>&nbsp;<small>Désactiver</small></button>
+          <button *ngIf="compte.etat=='SUSPENDED'" class="btn btn-success mr-2" (click)="etatCompte(compte.id)"><fa-icon [icon]="userActive"></fa-icon>&nbsp;<small>Activer</small></button>
+          <button class="btn btn-info mr-2" routerLink="/comptes/{{compte.id}}/operations"><fa-icon [icon]="operations"></fa-icon>&nbsp;<small>Opérations</small></button>
+          <div class="my-2"></div>
+          <button [disabled]="compte.etat=='SUSPENDED'" class="btn btn-light mr-2" routerLink="/comptes/{{compte.id}}/Versement"><fa-icon [icon]="userActive"></fa-icon>&nbsp;<small>Versement</small></button>
+          <button [disabled]="compte.etat=='SUSPENDED'"  class="btn btn-light mr-2" routerLink="/comptes/{{compte.id}}/retrait"><fa-icon [icon]="userActive"></fa-icon>&nbsp;<small>Retrait</small></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

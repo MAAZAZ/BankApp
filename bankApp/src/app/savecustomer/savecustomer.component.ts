@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {KeycloakSecurityService} from '../services/keycloak-security.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Customer} from "../models/Customer";
 
 @Component({
   selector: 'app-savecustomer',
@@ -8,9 +9,9 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./savecustomer.component.css']
 })
 export class SavecustomerComponent implements OnInit {
-  public customer:any={id:0,name:"",email:""};
+  public customer:Customer=new Customer();
   public id:string="";
-  public url:string="http://localhost:8888/CUSTOMER-SERVICE/customers/";
+  public url:string="http://localhost:8888/CLIENT-SERVICE/customers/";
   constructor(private kcService:KeycloakSecurityService, private route: Router, private routeActive: ActivatedRoute) { }
   ngOnInit(): void {
     this.id=this.routeActive.snapshot.params['id'];
@@ -29,6 +30,6 @@ export class SavecustomerComponent implements OnInit {
     }
     setTimeout(() => {
       this.route.navigate(['customers']);
-    }, 2000);  //2s
+    }, 3000);  //3s
   }
 }

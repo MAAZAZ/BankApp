@@ -22,7 +22,7 @@ public class Operation {
     private Date dateCreation;
     private double montant;
     private String type;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Compte compte;
 }

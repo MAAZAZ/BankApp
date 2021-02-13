@@ -1,5 +1,7 @@
 package org.enset.compte.controller;
 
+import lombok.Data;
+import lombok.ToString;
 import org.enset.compte.feignClient.CustomerServiceClient;
 import org.enset.compte.model.Compte;
 import org.enset.compte.model.Operation;
@@ -18,8 +20,6 @@ import java.util.Collection;
 import java.util.List;
 @RestController
 public class CompteController {
-    @Autowired
-    private OperationRepository operationRepository;
     @Autowired
     private CompteRepository compteRepository;
     @Autowired
@@ -52,28 +52,27 @@ public class CompteController {
         iCompetService.ajouterCompte(compte);
     }
 
-    @PostMapping("/comptes/full/versement")
-    public void versement(HttpServletRequest request,@RequestParam("id") Long id, @RequestParam("montant") double montant) {
-        iCompetService.versement(id, montant);
+    @PostMapping("/comptes/full/{id}/versement")
+    public void versement(HttpServletRequest request,@PathVariable Long id, @RequestBody Transaction transaction) {
+        iCompetService.versement(id, transaction.getMontant());
         Compte compte=compteRepository.findById(id).get();
         compte.setCustomer(customerServiceClient.getCustomerById("Bearer "+this.getToken(request),compte.getCustomerID()));
         kafkaTemplate.send(topic,compte.getCustomer().getName(),compte);
     }
 
-    @PostMapping("/comptes/full/retrait")
-    public void retrait(HttpServletRequest request, @RequestParam("id") Long id, @RequestParam("montant") double montant) {
-        iCompetService.retrait(id, montant);
+    @PostMapping("/comptes/full/{id}/retrait")
+    public void retrait(HttpServletRequest request, @PathVariable Long id, @RequestBody Transaction transaction) {
+        iCompetService.retrait(id, transaction.getMontant());
         Compte compte=compteRepository.findById(id).get();
         compte.setCustomer(customerServiceClient.getCustomerById("Bearer "+this.getToken(request),compte.getCustomerID()));
         kafkaTemplate.send(topic,compte.getCustomer().getName(),compte);
     }
 
     @PostMapping("/comptes/full/virement")
-    public void virement(HttpServletRequest request, @RequestParam("idUser1") Long idUser1, @RequestParam("idUser2") Long idUser2,
-                         @RequestParam("montant") double montant) {
-        iCompetService.virement(idUser1, idUser2, montant);
-        Compte compte=compteRepository.findById(idUser1).get();
-        Compte compte2=compteRepository.findById(idUser2).get();
+    public void virement(HttpServletRequest request, @RequestBody Virement virement) {
+        iCompetService.virement(virement.getIdSrc(), virement.getIdDest(), virement.getMontant());
+        Compte compte=compteRepository.findById(virement.getIdSrc()).get();
+        Compte compte2=compteRepository.findById(virement.getIdDest()).get();
         compte.setCustomer(customerServiceClient.getCustomerById("Bearer "+this.getToken(request),compte.getCustomerID()));
         compte2.setCustomer(customerServiceClient.getCustomerById("Bearer "+this.getToken(request),compte2.getCustomerID()));
         kafkaTemplate.send(topic,compte.getCustomer().getName(),compte);
@@ -81,19 +80,19 @@ public class CompteController {
     }
 
     @GetMapping("/comptes/full/{id}")
-    public Compte getCompte(HttpServletRequest request, @PathVariable("id") Long id) {
+    public Compte getCompte(HttpServletRequest request, @PathVariable Long id) {
         Compte compte=iCompetService.consulterCompte(id);
         compte.setCustomer(customerServiceClient.getCustomerById("Bearer "+this.getToken(request),compte.getCustomerID()));
         return compte;
     }
 
-    @PostMapping("/comptes/full/{id}/activer")
-    public void activerCompte(@RequestParam("id") Long id) {
+    @GetMapping("/comptes/full/{id}/activer")
+    public void activerCompte(@PathVariable Long id) {
         iCompetService.activeCompte(id);
     }
 
-    @PostMapping("/comptes/full/{id}/suspendre")
-    public void suspendreCompte(@RequestParam("id") Long id) {
+    @GetMapping("/comptes/full/{id}/suspendre")
+    public void suspendreCompte(@PathVariable Long id) {
         iCompetService.suspendreCompte(id);
     }
 
@@ -107,4 +106,17 @@ public class CompteController {
         return e.getMessage();
     }
 
+}
+
+@Data
+@ToString
+class Transaction{
+    private double montant;
+}
+
+@Data
+@ToString
+class Virement{
+    private long idSrc, idDest;
+    private double montant;
 }

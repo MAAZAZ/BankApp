@@ -36,9 +36,9 @@ public class KafkaStreamConsumer {
                 .toStream();
 
         counts_for_5_secondes.foreach((k,v)->{
-            System.out.println("************** Total soldes after 5 secondes ***************");
-            System.out.println("Customer = "+k.key()+", Total = "+v);
-            System.out.println("**********************************************************");
+            System.out.println("************** soldes total de chaque client apres 5 secondes ***************");
+            System.out.println("client = "+k.key()+", Solde total = "+v);
+            System.out.println("****************************************************************************************");
         });
 
         Topology topology=streamsBuilder.build();

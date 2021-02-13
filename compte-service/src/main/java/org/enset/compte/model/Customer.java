@@ -1,8 +1,11 @@
 package org.enset.compte.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
+
 public class Customer {
     private Long id;
     private String name;
